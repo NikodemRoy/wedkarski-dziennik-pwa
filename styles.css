@@ -1,0 +1,21 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+header {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+nav a {
+  margin-right: 10px;
+}
+
+#app {
+  padding: 10px;
+}
