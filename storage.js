@@ -13,5 +13,10 @@ function loadTrips() {
 }
 
 function saveTrips(trips) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(trips));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(trips));
+    return true;
+  } catch (e) {
+    return false;
+  }
 }

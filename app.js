@@ -39,24 +39,24 @@ function deleteTripById(id) {
     if (trips[i].id !== id) next.push(trips[i]);
   }
 
-  saveTrips(next);
+  return saveTrips(next);
 }
 
 function addFishToTrip(tripId, fish) {
   var trips = loadTrips();
   var idx = findTripIndexById(tripId, trips);
-  if (idx === -1) return;
+  if (idx === -1) return true;
 
   if (!Array.isArray(trips[idx].fish)) trips[idx].fish = [];
   trips[idx].fish.unshift(fish);
 
-  saveTrips(trips);
+  return saveTrips(trips);
 }
 
 function deleteFish(tripId, fishId) {
   var trips = loadTrips();
   var idx = findTripIndexById(tripId, trips);
-  if (idx === -1) return;
+  if (idx === -1) return true;
 
   var fish = trips[idx].fish;
   if (!Array.isArray(fish)) fish = [];
@@ -67,7 +67,7 @@ function deleteFish(tripId, fishId) {
   }
 
   trips[idx].fish = next;
-  saveTrips(trips);
+  return saveTrips(trips);
 }
 
 function setLocationStatus(text) {
@@ -77,6 +77,11 @@ function setLocationStatus(text) {
 
 function setCoverStatus(text) {
   var el = document.getElementById("coverStatus");
+  if (el) el.textContent = text;
+}
+
+function setFishPhotoStatus(text) {
+  var el = document.getElementById("fishPhotoStatus");
   if (el) el.textContent = text;
 }
 
@@ -119,6 +124,67 @@ function readFileAsDataUrl(file, cb) {
   reader.readAsDataURL(file);
 }
 
+function compressImageDataUrl(dataUrl, maxSize, quality, cb) {
+  var img = new Image();
+
+  img.onload = function () {
+    var w = img.naturalWidth || img.width;
+    var h = img.naturalHeight || img.height;
+
+    if (!w || !h) {
+      cb("");
+      return;
+    }
+
+    var scale = 1;
+    if (w > h && w > maxSize) scale = maxSize / w;
+    if (h >= w && h > maxSize) scale = maxSize / h;
+
+    var nw = Math.max(1, Math.round(w * scale));
+    var nh = Math.max(1, Math.round(h * scale));
+
+    var canvas = document.createElement("canvas");
+    canvas.width = nw;
+    canvas.height = nh;
+
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, nw, nh);
+
+    var out = "";
+    try {
+      out = canvas.toDataURL("image/jpeg", quality);
+    } catch (e) {
+      out = "";
+    }
+
+    cb(out);
+  };
+
+  img.onerror = function () {
+    cb("");
+  };
+
+  img.src = dataUrl;
+}
+
+function fileToCompressedDataUrl(file, maxSize, quality, cb) {
+  readFileAsDataUrl(file, function (dataUrl) {
+    if (!dataUrl || !String(dataUrl).startsWith("data:image/")) {
+      cb("");
+      return;
+    }
+    compressImageDataUrl(dataUrl, maxSize, quality, function (out) {
+      cb(out);
+    });
+  });
+}
+
+function saveTripObject(trip) {
+  var trips = loadTrips();
+  trips.unshift(trip);
+  return saveTrips(trips);
+}
+
 function handleClick(e) {
   var el = e.target;
   if (!el || !el.dataset) return;
@@ -134,14 +200,15 @@ function handleClick(e) {
   }
 
   if (el.dataset.action === "delete-trip") {
-    deleteTripById(el.dataset.id);
-    location.hash = "#trips";
+    var ok = deleteTripById(el.dataset.id);
+    if (ok) location.hash = "#trips";
     return;
   }
 
   if (el.dataset.action === "delete-fish") {
-    deleteFish(el.dataset.tripId, el.dataset.fishId);
-    render();
+    var ok2 = deleteFish(el.dataset.tripId, el.dataset.fishId);
+    if (ok2) render();
+    return;
   }
 }
 
@@ -167,7 +234,7 @@ function handleSubmit(e) {
 
     var file = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0] : null;
     if (!file) {
-      saveTripObject({
+      var ok = saveTripObject({
         id: id,
         lakeName: lakeName,
         date: date,
@@ -176,14 +243,25 @@ function handleSubmit(e) {
         coverPhoto: "",
         fish: []
       });
+
+      if (!ok) {
+        setCoverStatus("Brak miejsca w pamięci (localStorage).");
+        return;
+      }
+
       location.hash = "#trip/" + id;
       return;
     }
 
     setCoverStatus("Wczytywanie zdjęcia...");
 
-    readFileAsDataUrl(file, function (dataUrl) {
-      saveTripObject({
+    fileToCompressedDataUrl(file, 900, 0.7, function (dataUrl) {
+      if (!dataUrl) {
+        setCoverStatus("Nie udało się wczytać zdjęcia.");
+        return;
+      }
+
+      var ok2 = saveTripObject({
         id: id,
         lakeName: lakeName,
         date: date,
@@ -192,6 +270,12 @@ function handleSubmit(e) {
         coverPhoto: dataUrl,
         fish: []
       });
+
+      if (!ok2) {
+        setCoverStatus("Brak miejsca w pamięci (localStorage).");
+        return;
+      }
+
       location.hash = "#trip/" + id;
     });
 
@@ -205,24 +289,53 @@ function handleSubmit(e) {
     var species = document.getElementById("fishSpecies").value.trim();
     var length = document.getElementById("fishLength").value.trim();
     var notes2 = document.getElementById("fishNotes").value.trim();
+    var photoEl = document.getElementById("fishPhoto");
 
     if (!species) return;
 
-    addFishToTrip(tripId, {
-      id: makeId(),
-      species: species,
-      length: length,
-      notes: notes2
+    var file = photoEl && photoEl.files && photoEl.files[0] ? photoEl.files[0] : null;
+    if (!file) {
+      var ok3 = addFishToTrip(tripId, {
+        id: makeId(),
+        species: species,
+        length: length,
+        notes: notes2,
+        photo: ""
+      });
+
+      if (!ok3) {
+        setFishPhotoStatus("Brak miejsca w pamięci (localStorage).");
+        return;
+      }
+
+      render();
+      return;
+    }
+
+    setFishPhotoStatus("Wczytywanie zdjęcia...");
+
+    fileToCompressedDataUrl(file, 700, 0.65, function (dataUrl) {
+      if (!dataUrl) {
+        setFishPhotoStatus("Nie udało się wczytać zdjęcia.");
+        return;
+      }
+
+      var ok4 = addFishToTrip(tripId, {
+        id: makeId(),
+        species: species,
+        length: length,
+        notes: notes2,
+        photo: dataUrl
+      });
+
+      if (!ok4) {
+        setFishPhotoStatus("Brak miejsca w pamięci (localStorage).");
+        return;
+      }
+
+      render();
     });
-
-    render();
   }
-}
-
-function saveTripObject(trip) {
-  var trips = loadTrips();
-  trips.unshift(trip);
-  saveTrips(trips);
 }
 
 function render() {

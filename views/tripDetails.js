@@ -5,9 +5,15 @@ function fishListHtml(tripId, fish) {
   for (var i = 0; i < fish.length; i++) {
     var f = fish[i];
     var len = f.length ? " (" + escapeText(f.length) + " cm)" : "";
+    var img = "";
+
+    if (f.photo && String(f.photo).startsWith("data:image/")) {
+      img = "<img class=\"fish-photo\" src=\"" + f.photo + "\" alt=\"Ryba\">";
+    }
 
     html +=
       "<li>" +
+      img +
       "<strong>" + escapeText(f.species) + "</strong>" +
       len +
       (f.notes ? " - " + escapeText(f.notes) : "") +
@@ -78,6 +84,11 @@ function viewTripDetails(id) {
     "<div class=\"row\">" +
     "<label>Długość (cm, opcjonalnie)</label><br>" +
     "<input id=\"fishLength\" type=\"number\" min=\"0\">" +
+    "</div>" +
+    "<div class=\"row\">" +
+    "<label>Zdjęcie ryby (opcjonalnie)</label><br>" +
+    "<input id=\"fishPhoto\" type=\"file\" accept=\"image/*\" capture=\"environment\">" +
+    "<div id=\"fishPhotoStatus\"></div>" +
     "</div>" +
     "<div class=\"row\">" +
     "<label>Notatka (opcjonalnie)</label><br>" +
