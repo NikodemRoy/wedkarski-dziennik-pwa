@@ -49,8 +49,14 @@ function viewTripDetails(id) {
     mapLink = " <a href=\"https://www.google.com/maps?q=" + q + "\" target=\"_blank\">Otwórz w mapach</a>";
   }
 
+  var coverHtml = "";
+  if (t.coverPhoto && String(t.coverPhoto).startsWith("data:image/")) {
+    coverHtml = "<div class=\"row\"><img src=\"" + t.coverPhoto + "\" alt=\"Zdjęcie tła\"></div>";
+  }
+
   return (
     "<h1>Wpis</h1>" +
+    coverHtml +
     "<p><strong>Łowisko:</strong> " + escapeText(t.lakeName) + "</p>" +
     "<p><strong>Data:</strong> " + escapeText(t.date) + "</p>" +
     "<p><strong>Lokalizacja:</strong> " + locText + mapLink + "</p>" +

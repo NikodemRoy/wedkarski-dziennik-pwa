@@ -24,6 +24,11 @@ function viewAddTrip() {
     "<div id=\"locStatus\"></div>" +
     "</div>" +
     "<div class=\"row\">" +
+    "<label>Zdjęcie tła (opcjonalnie)</label><br>" +
+    "<input id=\"tripCover\" type=\"file\" accept=\"image/*\" capture=\"environment\">" +
+    "<div id=\"coverStatus\"></div>" +
+    "</div>" +
+    "<div class=\"row\">" +
     "<label>Notatki</label><br>" +
     "<textarea id=\"tripNotes\" rows=\"4\"></textarea>" +
     "</div>" +

@@ -75,6 +75,11 @@ function setLocationStatus(text) {
   if (el) el.textContent = text;
 }
 
+function setCoverStatus(text) {
+  var el = document.getElementById("coverStatus");
+  if (el) el.textContent = text;
+}
+
 function fillLocation(lat, lng) {
   var latEl = document.getElementById("tripLat");
   var lngEl = document.getElementById("tripLng");
@@ -101,6 +106,17 @@ function getLocation() {
       setLocationStatus("Nie udało się pobrać lokalizacji.");
     }
   );
+}
+
+function readFileAsDataUrl(file, cb) {
+  var reader = new FileReader();
+  reader.onload = function () {
+    cb(String(reader.result || ""));
+  };
+  reader.onerror = function () {
+    cb("");
+  };
+  reader.readAsDataURL(file);
 }
 
 function handleClick(e) {
@@ -140,28 +156,45 @@ function handleSubmit(e) {
     var notes = document.getElementById("tripNotes").value.trim();
     var lat = document.getElementById("tripLat").value.trim();
     var lng = document.getElementById("tripLng").value.trim();
+    var fileEl = document.getElementById("tripCover");
 
     if (!lakeName) return;
 
-    var trips = loadTrips();
+    var locationObj = null;
+    if (lat && lng) locationObj = { lat: lat, lng: lng };
+
     var id = makeId();
 
-    var locationObj = null;
-    if (lat && lng) {
-      locationObj = { lat: lat, lng: lng };
+    var file = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0] : null;
+    if (!file) {
+      saveTripObject({
+        id: id,
+        lakeName: lakeName,
+        date: date,
+        notes: notes,
+        location: locationObj,
+        coverPhoto: "",
+        fish: []
+      });
+      location.hash = "#trip/" + id;
+      return;
     }
 
-    trips.unshift({
-      id: id,
-      lakeName: lakeName,
-      date: date,
-      notes: notes,
-      location: locationObj,
-      fish: []
+    setCoverStatus("Wczytywanie zdjęcia...");
+
+    readFileAsDataUrl(file, function (dataUrl) {
+      saveTripObject({
+        id: id,
+        lakeName: lakeName,
+        date: date,
+        notes: notes,
+        location: locationObj,
+        coverPhoto: dataUrl,
+        fish: []
+      });
+      location.hash = "#trip/" + id;
     });
 
-    saveTrips(trips);
-    location.hash = "#trip/" + id;
     return;
   }
 
@@ -184,6 +217,12 @@ function handleSubmit(e) {
 
     render();
   }
+}
+
+function saveTripObject(trip) {
+  var trips = loadTrips();
+  trips.unshift(trip);
+  saveTrips(trips);
 }
 
 function render() {
