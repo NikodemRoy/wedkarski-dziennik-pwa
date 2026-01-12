@@ -37,15 +37,23 @@ function viewTripDetails(id) {
   var notes = t.notes ? escapeText(t.notes).replaceAll("\n", "<br>") : "";
 
   var locText = "-";
+  var mapLink = "";
+
   if (t.location && t.location.lat && t.location.lng) {
-    locText = escapeText(t.location.lat) + ", " + escapeText(t.location.lng);
+    var lat = String(t.location.lat);
+    var lng = String(t.location.lng);
+
+    locText = escapeText(lat) + ", " + escapeText(lng);
+
+    var q = encodeURIComponent(lat + "," + lng);
+    mapLink = " <a href=\"https://www.google.com/maps?q=" + q + "\" target=\"_blank\">Otwórz w mapach</a>";
   }
 
   return (
     "<h1>Wpis</h1>" +
     "<p><strong>Łowisko:</strong> " + escapeText(t.lakeName) + "</p>" +
     "<p><strong>Data:</strong> " + escapeText(t.date) + "</p>" +
-    "<p><strong>Lokalizacja:</strong> " + locText + "</p>" +
+    "<p><strong>Lokalizacja:</strong> " + locText + mapLink + "</p>" +
     "<p><strong>Notatki:</strong><br>" + (notes || "-") + "</p>" +
     "<p>" +
     "<button data-action=\"delete-trip\" data-id=\"" + escapeText(t.id) + "\">Usuń wpis</button>" +
