@@ -13,6 +13,17 @@ function viewAddTrip() {
     "<input id=\"tripDate\" type=\"date\" value=\"" + today + "\" required>" +
     "</div>" +
     "<div class=\"row\">" +
+    "<label>Lokalizacja</label><br>" +
+    "<button type=\"button\" data-action=\"get-location\">Pobierz lokalizację</button>" +
+    "<div class=\"row\">" +
+    "<input id=\"tripLat\" type=\"text\" placeholder=\"lat\" readonly>" +
+    "</div>" +
+    "<div class=\"row\">" +
+    "<input id=\"tripLng\" type=\"text\" placeholder=\"lng\" readonly>" +
+    "</div>" +
+    "<div id=\"locStatus\"></div>" +
+    "</div>" +
+    "<div class=\"row\">" +
     "<label>Notatki</label><br>" +
     "<textarea id=\"tripNotes\" rows=\"4\"></textarea>" +
     "</div>" +

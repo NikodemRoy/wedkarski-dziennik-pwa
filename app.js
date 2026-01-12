@@ -70,9 +70,47 @@ function deleteFish(tripId, fishId) {
   saveTrips(trips);
 }
 
+function setLocationStatus(text) {
+  var el = document.getElementById("locStatus");
+  if (el) el.textContent = text;
+}
+
+function fillLocation(lat, lng) {
+  var latEl = document.getElementById("tripLat");
+  var lngEl = document.getElementById("tripLng");
+  if (latEl) latEl.value = lat;
+  if (lngEl) lngEl.value = lng;
+}
+
+function getLocation() {
+  if (!navigator.geolocation) {
+    setLocationStatus("Brak geolokalizacji w przeglądarce.");
+    return;
+  }
+
+  setLocationStatus("Pobieranie...");
+
+  navigator.geolocation.getCurrentPosition(
+    function (pos) {
+      var lat = String(pos.coords.latitude);
+      var lng = String(pos.coords.longitude);
+      fillLocation(lat, lng);
+      setLocationStatus("Zapisano lokalizację.");
+    },
+    function () {
+      setLocationStatus("Nie udało się pobrać lokalizacji.");
+    }
+  );
+}
+
 function handleClick(e) {
   var el = e.target;
   if (!el || !el.dataset) return;
+
+  if (el.dataset.action === "get-location") {
+    getLocation();
+    return;
+  }
 
   if (el.dataset.action === "open-trip") {
     location.hash = "#trip/" + el.dataset.id;
@@ -100,17 +138,25 @@ function handleSubmit(e) {
     var lakeName = document.getElementById("lakeName").value.trim();
     var date = document.getElementById("tripDate").value;
     var notes = document.getElementById("tripNotes").value.trim();
+    var lat = document.getElementById("tripLat").value.trim();
+    var lng = document.getElementById("tripLng").value.trim();
 
     if (!lakeName) return;
 
     var trips = loadTrips();
     var id = makeId();
 
+    var locationObj = null;
+    if (lat && lng) {
+      locationObj = { lat: lat, lng: lng };
+    }
+
     trips.unshift({
       id: id,
       lakeName: lakeName,
       date: date,
       notes: notes,
+      location: locationObj,
       fish: []
     });
 

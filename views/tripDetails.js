@@ -36,10 +36,16 @@ function viewTripDetails(id) {
 
   var notes = t.notes ? escapeText(t.notes).replaceAll("\n", "<br>") : "";
 
+  var locText = "-";
+  if (t.location && t.location.lat && t.location.lng) {
+    locText = escapeText(t.location.lat) + ", " + escapeText(t.location.lng);
+  }
+
   return (
     "<h1>Wpis</h1>" +
     "<p><strong>Łowisko:</strong> " + escapeText(t.lakeName) + "</p>" +
     "<p><strong>Data:</strong> " + escapeText(t.date) + "</p>" +
+    "<p><strong>Lokalizacja:</strong> " + locText + "</p>" +
     "<p><strong>Notatki:</strong><br>" + (notes || "-") + "</p>" +
     "<p>" +
     "<button data-action=\"delete-trip\" data-id=\"" + escapeText(t.id) + "\">Usuń wpis</button>" +
