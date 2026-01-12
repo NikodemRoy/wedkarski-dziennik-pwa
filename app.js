@@ -17,6 +17,21 @@ function escapeText(s) {
     .replaceAll('"', "&quot;");
 }
 
+function getTripIdFromRoute(route) {
+  if (!route.startsWith("#trip/")) return null;
+  var id = route.slice(6);
+  if (!id) return null;
+  return id;
+}
+
+function findTripById(id) {
+  var trips = loadTrips();
+  for (var i = 0; i < trips.length; i++) {
+    if (trips[i].id === id) return trips[i];
+  }
+  return null;
+}
+
 function viewHome() {
   var trips = loadTrips();
   return (
@@ -43,8 +58,10 @@ function viewTrips() {
     var t = trips[i];
     html +=
       "<li>" +
+      "<a href=\"#trip/" + escapeText(t.id) + "\">" +
       "<strong>" + escapeText(t.lakeName) + "</strong>" +
       " (" + escapeText(t.date) + ")" +
+      "</a>" +
       " " +
       "<button data-action=\"delete-trip\" data-id=\"" + escapeText(t.id) + "\">Usuń</button>" +
       "</li>";
@@ -54,6 +71,32 @@ function viewTrips() {
   html += "<p><a href=\"#add-trip\">Dodaj kolejny wpis</a></p>";
 
   return html;
+}
+
+function viewTripDetails(id) {
+  var t = findTripById(id);
+
+  if (!t) {
+    return (
+      "<h1>Wpis</h1>" +
+      "<p>Nie znaleziono wpisu.</p>" +
+      "<p><a href=\"#trips\">Wróć</a></p>"
+    );
+  }
+
+  var notes = t.notes ? escapeText(t.notes).replaceAll("\n", "<br>") : "";
+
+  return (
+    "<h1>Wpis</h1>" +
+    "<p><strong>Łowisko:</strong> " + escapeText(t.lakeName) + "</p>" +
+    "<p><strong>Data:</strong> " + escapeText(t.date) + "</p>" +
+    "<p><strong>Notatki:</strong><br>" + (notes || "-") + "</p>" +
+    "<p>" +
+    "<button data-action=\"delete-trip\" data-id=\"" + escapeText(t.id) + "\">Usuń wpis</button>" +
+    " " +
+    "<a href=\"#trips\">Wróć do listy</a>" +
+    "</p>"
+  );
 }
 
 function viewAddTrip() {
@@ -100,7 +143,11 @@ function handleClick(e) {
 
   if (el.dataset.action === "delete-trip") {
     deleteTripById(el.dataset.id);
-    render();
+
+    var route = getRoute();
+    var tripId = getTripIdFromRoute(route);
+    if (tripId) location.hash = "#trips";
+    else render();
   }
 }
 
@@ -116,21 +163,25 @@ function handleSubmit(e) {
   if (!lakeName) return;
 
   var trips = loadTrips();
+  var id = makeId();
+
   trips.unshift({
-    id: makeId(),
+    id: id,
     lakeName: lakeName,
     date: date,
     notes: notes
   });
 
   saveTrips(trips);
-  location.hash = "#trips";
+  location.hash = "#trip/" + id;
 }
 
 function render() {
   var route = getRoute();
+  var tripId = getTripIdFromRoute(route);
 
-  if (route === "#home") app.innerHTML = viewHome();
+  if (tripId) app.innerHTML = viewTripDetails(tripId);
+  else if (route === "#home") app.innerHTML = viewHome();
   else if (route === "#trips") app.innerHTML = viewTrips();
   else if (route === "#add-trip") app.innerHTML = viewAddTrip();
   else location.hash = "#home";
