@@ -18,6 +18,8 @@ function fishListHtml(tripId, fish) {
       len +
       (f.notes ? " - " + escapeText(f.notes) : "") +
       " " +
+      "<button data-action=\"edit-fish\" data-trip-id=\"" + escapeText(tripId) + "\" data-fish-id=\"" + escapeText(f.id) + "\">Edytuj</button>" +
+      " " +
       "<button data-action=\"delete-fish\" data-trip-id=\"" + escapeText(tripId) + "\" data-fish-id=\"" + escapeText(f.id) + "\">Usuń</button>" +
       "</li>";
   }
@@ -42,16 +44,12 @@ function viewTripDetails(id) {
 
   var notes = t.notes ? escapeText(t.notes).replaceAll("\n", "<br>") : "";
 
-  var locText = "-";
+  var locText = "Brak";
   var mapLink = "";
 
   if (t.location && t.location.lat && t.location.lng) {
-    var lat = String(t.location.lat);
-    var lng = String(t.location.lng);
-
-    locText = escapeText(lat) + ", " + escapeText(lng);
-
-    var q = encodeURIComponent(lat + "," + lng);
+    locText = "Zapisana";
+    var q = encodeURIComponent(String(t.location.lat) + "," + String(t.location.lng));
     mapLink = " <a href=\"https://www.google.com/maps?q=" + q + "\" target=\"_blank\">Otwórz w mapach</a>";
   }
 
@@ -68,6 +66,8 @@ function viewTripDetails(id) {
     "<p><strong>Lokalizacja:</strong> " + locText + mapLink + "</p>" +
     "<p><strong>Notatki:</strong><br>" + (notes || "-") + "</p>" +
     "<p>" +
+    "<button data-action=\"edit-trip\" data-id=\"" + escapeText(t.id) + "\">Edytuj wpis</button>" +
+    " " +
     "<button data-action=\"delete-trip\" data-id=\"" + escapeText(t.id) + "\">Usuń wpis</button>" +
     " " +
     "<a href=\"#trips\">Wróć do listy</a>" +
