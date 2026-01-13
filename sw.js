@@ -23,10 +23,15 @@ var ASSETS = [
   "./icons/android/android-launchericon-96-96.png"
 ];
 
+
 self.addEventListener("install", function (e) {
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      return cache.addAll(ASSETS);
+      return Promise.all(
+        ASSETS.map(function (url) {
+          return cache.add(url).catch(function () {});
+        })
+      );
     })
   );
 });
@@ -34,32 +39,39 @@ self.addEventListener("install", function (e) {
 self.addEventListener("activate", function (e) {
   e.waitUntil(
     caches.keys().then(function (keys) {
-      var tasks = [];
-      for (var i = 0; i < keys.length; i++) {
-        if (keys[i] !== CACHE_NAME) tasks.push(caches.delete(keys[i]));
-      }
-      return Promise.all(tasks);
+      return Promise.all(
+        keys.map(function (k) {
+          if (k !== CACHE_NAME) return caches.delete(k);
+        })
+      );
     })
   );
 });
 
 self.addEventListener("fetch", function (e) {
   var req = e.request;
+
   if (req.method !== "GET") return;
+
+  var url = new URL(req.url);
+
+  if (url.protocol !== "http:" && url.protocol !== "https:") return;
 
   e.respondWith(
     caches.match(req).then(function (cached) {
       if (cached) return cached;
 
-      return fetch(req).then(function (res) {
-        var copy = res.clone();
-        caches.open(CACHE_NAME).then(function (cache) {
-          cache.put(req, copy);
+      return fetch(req)
+        .then(function (res) {
+          var copy = res.clone();
+          caches.open(CACHE_NAME).then(function (cache) {
+            cache.put(req, copy).catch(function () {});
+          });
+          return res;
+        })
+        .catch(function () {
+          return caches.match("./index.html");
         });
-        return res;
-      }).catch(function () {
-        return caches.match("./index.html");
-      });
     })
   );
 });
