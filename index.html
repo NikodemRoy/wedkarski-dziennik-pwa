@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <title>Wędkarski Dziennik</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#ffffff">
-  <link rel="icon" href="icons/android/android-launchericon-192-192.png">
 </head>
 <body>
   <header>
@@ -20,15 +19,27 @@
 
   <div id="app"></div>
 
-  <script src="storage.js"></script>
+  <script src="./storage.js"></script>
 
-  <script src="views/home.js"></script>
-  <script src="views/trips.js"></script>
-  <script src="views/addTrip.js"></script>
-  <script src="views/tripDetails.js"></script>
-  <script src="views/editTrip.js"></script>
-  <script src="views/editFish.js"></script>
+  <script src="./utils/helper.js"></script>
+  <script src="./utils/images.js"></script>
+  <script src="./utils/location.js"></script>
 
-  <script src="app.js"></script>
+  <script src="./data/trips.js"></script>
+  <script src="./data/fish.js"></script>
+
+  <script src="./views/home.js"></script>
+  <script src="./views/trips.js"></script>
+  <script src="./views/addTrip.js"></script>
+  <script src="./views/tripDetails.js"></script>
+  <script src="./views/editTrip.js"></script>
+  <script src="./views/editFish.js"></script>
+
+  <script src="./app.js"></script>
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("./sw.js");
+  }
+</script>
 </body>
 </html>

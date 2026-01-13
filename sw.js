@@ -6,13 +6,21 @@ var ASSETS = [
   "./styles.css",
   "./storage.js",
   "./app.js",
+  "./manifest.webmanifest",
+  "./utils/helper.js",
+  "./utils/images.js",
+  "./utils/location.js",
+  "./data/trips.js",
+  "./data/fish.js",
   "./views/home.js",
   "./views/trips.js",
   "./views/addTrip.js",
   "./views/tripDetails.js",
-  "./manifest.webmanifest",
-  "./icons/icon-192.png",
-  "./icons/icon-512.png"
+  "./views/editTrip.js",
+  "./views/editFish.js",
+  "./icons/android/android-launchericon-192-192.png",
+  "./icons/android/android-launchericon-512-512.png",
+  "./icons/android/android-launchericon-96-96.png"
 ];
 
 self.addEventListener("install", function (e) {
