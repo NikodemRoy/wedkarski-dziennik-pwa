@@ -319,3 +319,24 @@ window.addEventListener("click", handleClick);
 window.addEventListener("submit", handleSubmit);
 window.addEventListener("hashchange", render);
 window.addEventListener("load", render);
+
+function updateNetBanner() {
+  var el = document.getElementById("netStatus");
+  if (!el) return;
+
+  if (navigator.onLine) {
+    el.hidden = true;
+    el.classList.remove("offline");
+    el.classList.add("online");
+    el.textContent = "Online";
+  } else {
+    el.hidden = false;
+    el.classList.remove("online");
+    el.classList.add("offline");
+    el.textContent = "Offline: aplikacja działa, ale bez internetu";
+  }
+}
+
+window.addEventListener("online", updateNetBanner);
+window.addEventListener("offline", updateNetBanner);
+updateNetBanner();

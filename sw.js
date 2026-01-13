@@ -1,4 +1,4 @@
-var CACHE_NAME = "wedkarski-cache-v1";
+var CACHE_NAME = "wedkarski-cache-v3";
 
 var ASSETS = [
   "./",
@@ -23,8 +23,8 @@ var ASSETS = [
   "./icons/android/android-launchericon-96-96.png"
 ];
 
-
 self.addEventListener("install", function (e) {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return Promise.all(
@@ -38,13 +38,16 @@ self.addEventListener("install", function (e) {
 
 self.addEventListener("activate", function (e) {
   e.waitUntil(
-    caches.keys().then(function (keys) {
-      return Promise.all(
-        keys.map(function (k) {
-          if (k !== CACHE_NAME) return caches.delete(k);
-        })
-      );
-    })
+    Promise.all([
+      caches.keys().then(function (keys) {
+        return Promise.all(
+          keys.map(function (k) {
+            if (k !== CACHE_NAME) return caches.delete(k);
+          })
+        );
+      }),
+      self.clients.claim()
+    ])
   );
 });
 
@@ -54,8 +57,19 @@ self.addEventListener("fetch", function (e) {
   if (req.method !== "GET") return;
 
   var url = new URL(req.url);
-
   if (url.protocol !== "http:" && url.protocol !== "https:") return;
+
+  if (req.mode === "navigate") {
+    e.respondWith(
+      caches.match("./index.html").then(function (cached) {
+        if (cached) return cached;
+        return fetch(req).catch(function () {
+          return caches.match("./index.html");
+        });
+      })
+    );
+    return;
+  }
 
   e.respondWith(
     caches.match(req).then(function (cached) {
@@ -70,7 +84,7 @@ self.addEventListener("fetch", function (e) {
           return res;
         })
         .catch(function () {
-          return caches.match("./index.html");
+          return cached;
         });
     })
   );

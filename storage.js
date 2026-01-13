@@ -1,4 +1,4 @@
-var STORAGE_KEY = "wedkarski_trip_v1";
+var STORAGE_KEY = "wedkarski_trip_v3";
 
 function loadTrips() {
   var raw = localStorage.getItem(STORAGE_KEY);

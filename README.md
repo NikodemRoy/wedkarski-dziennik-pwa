@@ -6,15 +6,15 @@ PWA do archiwizowania wypraw wędkarskich (wpisów dziennika) oraz złowionych r
 Stworzyć prostą, działającą PWA w czystym JavaScript, HTML i CSS.
 
 ## Wymagania (checklista)
-- [ ] Minimum 3 widoki
-- [ ] Routing między widokami
-- [ ] PWA (manifest + service worker)
+- [x] Minimum 3 widoki
+- [x] Routing między widokami
+- [x] PWA (manifest + service worker)
 - [ ] Działanie offline
-- [ ] Geolokalizacja
-- [ ] Kamera / zdjęcia
+- [x] Geolokalizacja
+- [x] Kamera / zdjęcia
 - [ ] Responsywność
 - [ ] Hosting HTTPS
-- [ ] Strategia cache
+- [x] Strategia cache
 - [ ] Lighthouse 80+
-- [ ] Dokumentacja
+- [x] Dokumentacja
 

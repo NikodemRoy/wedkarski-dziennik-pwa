@@ -39,3 +39,16 @@ img {
   vertical-align: middle;
   margin-right: 8px;
 }
+
+.net-status {
+  padding: 6px 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.net-status.offline {
+  background: #fff3cd;
+}
+
+.net-status.online {
+  background: #e7f5ff;
+}
