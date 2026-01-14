@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pl">
+
 <head>
   <meta charset="UTF-8">
   <title>Wędkarski Dziennik</title>
@@ -13,15 +14,23 @@
   <link rel="manifest" href="./manifest.webmanifest">
   <meta name="theme-color" content="#ffffff">
 </head>
+
 <body>
   <header>
-    <div id="netStatus" class="net-status" hidden>Offline</div>
-    <nav>
-      <a href="#home">Start</a>
-      <a href="#trips">Wpisy</a>
-      <a href="#add-trip">Nowy wpis</a>
-    </nav>
+    <div class="wrap">
+      <nav>
+        <a href="#home">Start</a>
+        <a href="#trips">Wpisy</a>
+        <a href="#add-trip">Nowy wpis</a>
+      </nav>
+    </div>
   </header>
+
+  <div id="netToast" class="toast" hidden>
+    <div id="netText" class="toast-text">TRYB OFFLINE</div>
+    <button id="netClose" class="toast-close" type="button">X</button>
+  </div>
+
 
   <main id="app"></main>
 
@@ -48,4 +57,5 @@
     }
   </script>
 </body>
+
 </html>

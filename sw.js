@@ -1,4 +1,4 @@
-var CACHE_NAME = "wedkarski-cache-v5";
+var CACHE_NAME = "wedkarski-cache-v8";
 
 var ASSETS = [
   "./",
@@ -63,12 +63,12 @@ self.addEventListener("fetch", function (e) {
   if (isNavigation(req)) {
     e.respondWith(
       fetch(req)
-        .then(function (res) {
-          return res;
-        })
-        .catch(function () {
-          return caches.match("./index.html");
-        })
+      .then(function (res) {
+        return res;
+      })
+      .catch(function () {
+        return caches.match("./index.html");
+      })
     );
     return;
   }

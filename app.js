@@ -1,4 +1,5 @@
 var app = document.getElementById("app");
+var netClosed = false;
 
 function handleClick(e) {
   var el = e.target;
@@ -67,7 +68,10 @@ function handleSubmit(e) {
     if (latRaw && lngRaw) {
       var lat = parseFloat(latRaw);
       var lng = parseFloat(lngRaw);
-      if (!isNaN(lat) && !isNaN(lng)) locationObj = { lat: lat, lng: lng };
+      if (!isNaN(lat) && !isNaN(lng)) locationObj = {
+        lat: lat,
+        lng: lng
+      };
     }
 
     var id = makeId();
@@ -139,7 +143,10 @@ function handleSubmit(e) {
     if (latRaw2 && lngRaw2) {
       var lat2 = parseFloat(latRaw2);
       var lng2 = parseFloat(lngRaw2);
-      if (!isNaN(lat2) && !isNaN(lng2)) locationObj2 = { lat: lat2, lng: lng2 };
+      if (!isNaN(lat2) && !isNaN(lng2)) locationObj2 = {
+        lat: lat2,
+        lng: lng2
+      };
     }
 
     var file2 = fileEl2 && fileEl2.files && fileEl2.files[0] ? fileEl2.files[0] : null;
@@ -346,23 +353,47 @@ window.addEventListener("submit", handleSubmit);
 window.addEventListener("hashchange", render);
 window.addEventListener("load", render);
 
+function hideToast() {
+  var t = document.getElementById("netToast");
+  if (t) t.style.display = "none";
+}
+
+function showToast() {
+  var t = document.getElementById("netToast");
+  if (t) t.style.display = "";
+}
+
 function updateNetBanner() {
-  var el = document.getElementById("netStatus");
-  if (!el) return;
+  var text = document.getElementById("netText");
+  if (!text) return;
 
   if (navigator.onLine) {
-    el.hidden = true;
-    el.classList.remove("offline");
-    el.classList.add("online");
-    el.textContent = "Online";
-  } else {
-    el.hidden = false;
-    el.classList.remove("online");
-    el.classList.add("offline");
-    el.textContent = "Offline: aplikacja działa, ale bez internetu";
+    netClosed = false;
+    hideToast();
+    return;
   }
+
+  if (netClosed) {
+    hideToast();
+    return;
+  }
+
+  text.textContent = "TRYB OFFLINE";
+  showToast();
 }
 
 window.addEventListener("online", updateNetBanner);
 window.addEventListener("offline", updateNetBanner);
-updateNetBanner();
+
+window.addEventListener("load", function () {
+  var btn = document.getElementById("netClose");
+  if (btn) {
+    btn.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      netClosed = true;
+      hideToast();
+    });
+  }
+  updateNetBanner();
+});
