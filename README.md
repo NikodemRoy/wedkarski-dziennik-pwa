@@ -87,5 +87,5 @@ http://localhost:5000
 -   [x] Kamera
 -   [x] Strategia cache
 -   [x] Lighthouse 80+
--   [ ] Responsywność
+-   [x] Responsywność
 -   [ ] Hosting HTTPS
