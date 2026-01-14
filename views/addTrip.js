@@ -15,12 +15,8 @@ function viewAddTrip() {
     "<div class=\"row\">" +
     "<label>Lokalizacja</label><br>" +
     "<button type=\"button\" data-action=\"get-location\">Pobierz lokalizację</button>" +
-    "<div class=\"row\">" +
-    "<input id=\"tripLat\" type=\"text\" placeholder=\"lat\" readonly>" +
-    "</div>" +
-    "<div class=\"row\">" +
-    "<input id=\"tripLng\" type=\"text\" placeholder=\"lng\" readonly>" +
-    "</div>" +
+    "<input id=\"tripLat\" type=\"hidden\" value=\"\">" +
+    "<input id=\"tripLng\" type=\"hidden\" value=\"\">" +
     "<div id=\"locStatus\"></div>" +
     "</div>" +
     "<div class=\"row\">" +

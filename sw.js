@@ -1,4 +1,4 @@
-var CACHE_NAME = "wedkarski-cache-v3";
+var CACHE_NAME = "wedkarski-cache-v4";
 
 var ASSETS = [
   "./",
@@ -23,34 +23,6 @@ var ASSETS = [
   "./icons/android/android-launchericon-96-96.png"
 ];
 
-self.addEventListener("install", function (e) {
-  self.skipWaiting();
-  e.waitUntil(
-    caches.open(CACHE_NAME).then(function (cache) {
-      return Promise.all(
-        ASSETS.map(function (url) {
-          return cache.add(url).catch(function () {});
-        })
-      );
-    })
-  );
-});
-
-self.addEventListener("activate", function (e) {
-  e.waitUntil(
-    Promise.all([
-      caches.keys().then(function (keys) {
-        return Promise.all(
-          keys.map(function (k) {
-            if (k !== CACHE_NAME) return caches.delete(k);
-          })
-        );
-      }),
-      self.clients.claim()
-    ])
-  );
-});
-
 self.addEventListener("fetch", function (e) {
   var req = e.request;
 
@@ -61,12 +33,17 @@ self.addEventListener("fetch", function (e) {
 
   if (req.mode === "navigate") {
     e.respondWith(
-      caches.match("./index.html").then(function (cached) {
-        if (cached) return cached;
-        return fetch(req).catch(function () {
+      fetch(req)
+        .then(function (res) {
+          var copy = res.clone();
+          caches.open(CACHE_NAME).then(function (cache) {
+            cache.put("./index.html", copy).catch(function () {});
+          });
+          return res;
+        })
+        .catch(function () {
           return caches.match("./index.html");
-        });
-      })
+        })
     );
     return;
   }

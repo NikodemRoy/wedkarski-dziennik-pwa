@@ -1,7 +1,7 @@
 function addFishToTrip(tripId, fish) {
   var trips = loadTrips();
   var idx = findTripIndexById(tripId, trips);
-  if (idx === -1) return true;
+  if (idx === -1) return false;
 
   if (!Array.isArray(trips[idx].fish)) trips[idx].fish = [];
   trips[idx].fish.unshift(fish);
