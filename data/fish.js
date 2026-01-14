@@ -20,7 +20,10 @@ function updateFish(tripId, fishId, patch) {
   var f = null;
 
   for (var i = 0; i < fish.length; i++) {
-    if (fish[i].id === fishId) f = fish[i];
+    if (fish[i].id === fishId) {
+      f = fish[i];
+      break;
+    }
   }
 
   if (!f) return false;

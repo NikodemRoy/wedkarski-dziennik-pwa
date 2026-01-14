@@ -30,12 +30,18 @@ function handleClick(e) {
   }
 
   if (el.dataset.action === "delete-trip") {
+    var sure = confirm("Usunąć wpis?");
+    if (!sure) return;
+
     var ok = deleteTripById(el.dataset.id);
     if (ok) location.hash = "#trips";
     return;
   }
 
   if (el.dataset.action === "delete-fish") {
+    var sure2 = confirm("Usunąć rybę?");
+    if (!sure2) return;
+
     var ok2 = deleteFish(el.dataset.tripId, el.dataset.fishId);
     if (ok2) render();
     return;
@@ -51,14 +57,18 @@ function handleSubmit(e) {
     var lakeName = document.getElementById("lakeName").value.trim();
     var date = document.getElementById("tripDate").value;
     var notes = document.getElementById("tripNotes").value.trim();
-    var lat = document.getElementById("tripLat").value.trim();
-    var lng = document.getElementById("tripLng").value.trim();
+    var latRaw = document.getElementById("tripLat").value.trim();
+    var lngRaw = document.getElementById("tripLng").value.trim();
     var fileEl = document.getElementById("tripCover");
 
     if (!lakeName) return;
 
     var locationObj = null;
-    if (lat && lng) locationObj = { lat: lat, lng: lng };
+    if (latRaw && lngRaw) {
+      var lat = parseFloat(latRaw);
+      var lng = parseFloat(lngRaw);
+      if (!isNaN(lat) && !isNaN(lng)) locationObj = { lat: lat, lng: lng };
+    }
 
     var id = makeId();
     var file = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0] : null;
@@ -119,14 +129,18 @@ function handleSubmit(e) {
     var lakeName2 = document.getElementById("editLakeName").value.trim();
     var date2 = document.getElementById("editTripDate").value;
     var notes2 = document.getElementById("editTripNotes").value.trim();
-    var lat2 = document.getElementById("editTripLat").value.trim();
-    var lng2 = document.getElementById("editTripLng").value.trim();
+    var latRaw2 = document.getElementById("editTripLat").value.trim();
+    var lngRaw2 = document.getElementById("editTripLng").value.trim();
     var fileEl2 = document.getElementById("editTripCover");
 
     if (!lakeName2) return;
 
     var locationObj2 = null;
-    if (lat2 && lng2) locationObj2 = { lat: lat2, lng: lng2 };
+    if (latRaw2 && lngRaw2) {
+      var lat2 = parseFloat(latRaw2);
+      var lng2 = parseFloat(lngRaw2);
+      if (!isNaN(lat2) && !isNaN(lng2)) locationObj2 = { lat: lat2, lng: lng2 };
+    }
 
     var file2 = fileEl2 && fileEl2.files && fileEl2.files[0] ? fileEl2.files[0] : null;
 
@@ -179,9 +193,15 @@ function handleSubmit(e) {
 
     var tripId2 = e.target.dataset.tripId;
     var species = document.getElementById("fishSpecies").value.trim();
-    var length = document.getElementById("fishLength").value.trim();
+    var lengthRaw = document.getElementById("fishLength").value.trim();
     var notes3 = document.getElementById("fishNotes").value.trim();
     var photoEl = document.getElementById("fishPhoto");
+
+    var length = null;
+    if (lengthRaw) {
+      var n = parseFloat(lengthRaw);
+      if (!isNaN(n)) length = n;
+    }
 
     if (!species) return;
 
@@ -239,9 +259,15 @@ function handleSubmit(e) {
     var fishId = e.target.dataset.fishId;
 
     var species2 = document.getElementById("editFishSpecies").value.trim();
-    var length2 = document.getElementById("editFishLength").value.trim();
+    var lengthRaw2 = document.getElementById("editFishLength").value.trim();
     var notes4 = document.getElementById("editFishNotes").value.trim();
     var photoEl2 = document.getElementById("editFishPhoto");
+
+    var length2 = null;
+    if (lengthRaw2) {
+      var n2 = parseFloat(lengthRaw2);
+      if (!isNaN(n2)) length2 = n2;
+    }
 
     if (!species2) return;
 
