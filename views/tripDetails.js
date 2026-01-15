@@ -5,8 +5,8 @@ function fishListHtml(tripId, fish) {
   for (var i = 0; i < fish.length; i++) {
     var f = fish[i];
     var len = f.length ? " (" + escapeText(f.length) + " cm)" : "";
-    var img = "<div class=\"fish-photo\"></div>";
 
+    var img = "<div class=\"fish-photo\"></div>";
     if (f.photo && String(f.photo).startsWith("data:image/")) {
       img = "<div class=\"fish-photo\"><img src=\"" + f.photo + "\" alt=\"Ryba\" data-action=\"zoom-photo\"></div>";
     }
@@ -14,11 +14,13 @@ function fishListHtml(tripId, fish) {
     html +=
       "<li>" +
       "<div class=\"fish-row\">" +
-      img +
-      "<div>" +
+      "<div class=\"fish-top\">" +
       "<div class=\"item-title\">" + escapeText(f.species) + len + "</div>" +
+      img +
+      "</div>" +
+      "<div>" +
       "<div class=\"item-sub\">" + (f.notes ? escapeText(f.notes) : "") + "</div>" +
-      "<div class=\"actions\" style=\"margin-top:8px;\">" +
+      "<div class=\"actions fish-actions\" style=\"margin-top:8px;\">" +
       "<button class=\"secondary\" data-action=\"edit-fish\" data-trip-id=\"" + escapeText(tripId) + "\" data-fish-id=\"" + escapeText(f.id) + "\">Edytuj</button>" +
       "<button class=\"danger\" data-action=\"delete-fish\" data-trip-id=\"" + escapeText(tripId) + "\" data-fish-id=\"" + escapeText(f.id) + "\">Usuń</button>" +
       "</div>" +
@@ -29,6 +31,7 @@ function fishListHtml(tripId, fish) {
   html += "</ul>";
   return html;
 }
+
 
 function viewTripDetails(id) {
   var trips = loadTrips();
