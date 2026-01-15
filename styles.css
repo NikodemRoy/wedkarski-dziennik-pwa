@@ -331,10 +331,6 @@ input[type="file"]::-webkit-file-upload-button {
   background: var(--warn);
 }
 
-.toast.online {
-  background: #d7efff;
-}
-
 .toast-text {
   font-size: 12px;
   color: var(--text);
