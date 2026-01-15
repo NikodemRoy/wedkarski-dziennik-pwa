@@ -8,7 +8,7 @@ function fishListHtml(tripId, fish) {
     var img = "<div class=\"fish-photo\"></div>";
 
     if (f.photo && String(f.photo).startsWith("data:image/")) {
-      img = "<div class=\"fish-photo\"><img src=\"" + f.photo + "\" alt=\"Ryba\"></div>";
+      img = "<div class=\"fish-photo\"><img src=\"" + f.photo + "\" alt=\"Ryba\" data-action=\"zoom-photo\"></div>";
     }
 
     html +=

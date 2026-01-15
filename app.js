@@ -47,6 +47,11 @@ function handleClick(e) {
     if (ok2) render();
     return;
   }
+
+  if (el.dataset.action === "zoom-photo") {
+    showImageOverlay(el.src);
+    return;
+  }
 }
 
 function handleSubmit(e) {
@@ -397,3 +402,18 @@ window.addEventListener("load", function () {
   }
   updateNetBanner();
 });
+
+function showImageOverlay(src) {
+  var overlay = document.createElement("div");
+  overlay.className = "img-overlay";
+
+  var img = document.createElement("img");
+  img.src = src;
+
+  overlay.appendChild(img);
+  document.body.appendChild(overlay);
+
+  overlay.addEventListener("click", function () {
+    overlay.remove();
+  });
+}

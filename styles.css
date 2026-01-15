@@ -344,6 +344,27 @@ input[type="file"]::-webkit-file-upload-button {
   box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.25);
 }
 
+.img-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.img-overlay img {
+  max-width: 95%;
+  max-height: 95%;
+  border: 3px solid var(--border);
+  border-radius: var(--r);
+  background: #fff;
+}
+
 @media (max-width: 480px) {
   header .wrap {
     justify-content: center;
