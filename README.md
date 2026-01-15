@@ -143,12 +143,12 @@ http://localhost:5000
 
 ---
 
-## Status wymagań
+## Realizacja wymagań
 
 - [x] Minimum 3 widoki
 - [x] Routing
 - [x] Manifest
-- [x] Service Worker (ręczny)
+- [x] Service Worker
 - [x] Instalowalność
 - [x] Offline
 - [x] Geolokalizacja
