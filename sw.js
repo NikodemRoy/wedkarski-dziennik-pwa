@@ -63,12 +63,12 @@ self.addEventListener("fetch", function (e) {
   if (isNavigation(req)) {
     e.respondWith(
       fetch(req)
-      .then(function (res) {
-        return res;
-      })
-      .catch(function () {
-        return caches.match("./index.html");
-      })
+        .then(function (res) {
+          return res;
+        })
+        .catch(function () {
+          return caches.match("./index.html");
+        })
     );
     return;
   }
@@ -86,7 +86,7 @@ self.addEventListener("fetch", function (e) {
           return res;
         })
         .catch(function () {
-          return cached;
+          return new Response("", { status: 504, statusText: "Offline" });
         });
     })
   );
