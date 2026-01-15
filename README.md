@@ -1,91 +1,133 @@
 # Wędkarski Dziennik (PWA)
 
-Wędkarski Dziennik to progresywna aplikacja webowa (PWA) do zapisywania
-wypraw wędkarskich oraz złowionych ryb. Aplikacja działa w pełni po
-stronie klienta, bez backendu, zapisuje dane lokalnie i obsługuje tryb
-offline.
+Wędkarski Dziennik to prosta progresywna aplikacja webowa (PWA) do zapisywania wypraw wędkarskich oraz złowionych ryb. Aplikacja działa w całości po stronie klienta, bez backendu, zapisuje dane lokalnie i obsługuje tryb offline.
 
 Projekt wykonany w czystym HTML, CSS i JavaScript.
+
+**Demo (HTTPS):** https://dziennik-wedkarski-pwa.netlify.app/
+
+---
 
 ## Cel projektu
 
 Celem projektu było stworzenie aplikacji PWA, która:
--   Działa offline 
--   Może być zainstalowana na urządzeniu
--   Wykorzystuje natywne API przeglądarki 
--   Posiada kilka widoków i routing
--   Zapisuje dane lokalnie
--   Osiąga wyniki 80+ w Lighthouse.
+
+- działa offline,
+- może być zainstalowana na urządzeniu,
+- wykorzystuje natywne API przeglądarki,
+- posiada kilka widoków i prosty routing,
+- zapisuje dane lokalnie,
+- osiąga wysokie wyniki w Lighthouse.
+
+---
 
 ## Funkcje
 
--   Dodawanie, edycja i usuwanie wypraw
--   Dodawanie, edycja i usuwanie ryb
--   Notatki do wpisów i ryb
--   Zdjęcia (tło wpisu, zdjęcie ryby)
--   Pobieranie lokalizacji GPS
--   Działanie offline
--   Instalacja jako aplikacja
+- dodawanie, edycja i usuwanie wypraw,
+- dodawanie, edycja i usuwanie ryb,
+- notatki do wpisów i ryb,
+- zdjęcia (tło wpisu, zdjęcie ryby),
+- pobieranie lokalizacji GPS,
+- działanie offline,
+- instalacja jako aplikacja.
+
+---
 
 ## Widoki
 
 Routing oparty o hash (`#`).
 
--   Home
--   Lista wpisów
--   Dodawanie wpisu
--   Szczegóły wpisu
--   Edycja wpisu
--   Edycja ryby
+- Start (Home)
+- Lista wpisów
+- Dodawanie wpisu
+- Szczegóły wpisu
+- Edycja wpisu
+- Edycja ryby
+
+Każdy widok ma jasno określony cel i jest połączony z pozostałymi w spójny sposób.
+
+---
 
 ## Natywne API
 
 Aplikacja wykorzystuje:
 
-GPS
-Pobieranie pozycji użytkownika przy dodawaniu i edycji wpisu.
+**Geolocation API**  
+Pobieranie aktualnej pozycji użytkownika przy dodawaniu i edycji wpisu.
 
-Kamera/galeria
-Dodawanie zdjęć przez input file. Obrazy są skalowane i kompresowane za
-pomocą canvas.
+**Dostęp do aparatu/galerii (input file)**  
+Dodawanie zdjęć z urządzenia. Obrazy są skalowane i kompresowane za pomocą Canvas API.
 
-## PWA i offline
+---
 
--   Manifest (name, short_name, ikony, standalone)
--   Ręcznie napisany Service Worker (bez Workboxa)
--   Cache zasobów statycznych
--   Fallback na index.html dla routingu SPA
--   Działanie offline
--   Informacja o stanie online/offline
+## PWA i tryb offline
+
+- manifest aplikacji (name, short_name, ikony, tryb standalone),
+- ręcznie napisany Service Worker (bez Workboxa),
+- cache zasobów statycznych,
+- fallback na `index.html` dla routingu SPA,
+- działanie aplikacji bez dostępu do internetu,
+- informacja o stanie online/offline.
+
+---
+
+## Strategie cache
+
+- zasoby statyczne (HTML, CSS, JS, ikony): cache-first,
+- nawigacja: fallback do `index.html` w trybie offline.
+
+---
+
+## Wydajność
+
+Aplikacja osiąga bardzo wysokie wyniki w Lighthouse (100 w trybie incognito).
+
+![Wynik Lighthouse](./wynik_lighthouse.png)
+
+---
 
 ## Technologie
 
--   HTML
--   CSS
--   JavaScript (Vanilla)
--   Service Worker
--   Cache API
--   LocalStorage
--   Canvas API
--   Geolocation API
+- HTML
+- CSS
+- JavaScript (Vanilla)
+- Service Worker
+- Cache API
+- LocalStorage
+- Canvas API
+- Geolocation API
+
+---
 
 ## Uruchomienie lokalne
 
-python -m http.server 5000
+Ze względu na Service Worker wymagane jest HTTPS lub serwer lokalny.
 
+Przykład:
+
+```
+python -m http.server 5000
+```
+
+Następnie:
+
+```
 http://localhost:5000
+```
+
+---
 
 ## Status wymagań
 
--   [x] Minimum 3 widoki
--   [x] Routing
--   [x] Manifest
--   [x] Service Worker (ręczny)
--   [x] Instalowalność
--   [x] Offline
--   [x] Geolokalizacja
--   [x] Kamera
--   [x] Strategia cache
--   [x] Lighthouse 80+
--   [x] Responsywność
--   [ ] Hosting HTTPS
+- [x] Minimum 3 widoki
+- [x] Routing
+- [x] Manifest
+- [x] Service Worker (ręczny)
+- [x] Instalowalność
+- [x] Offline
+- [x] Geolokalizacja
+- [x] Dostęp do aparatu/galerii
+- [x] Strategia cache
+- [x] Lighthouse 80+
+- [x] Responsywność
+- [x] Hosting HTTPS
