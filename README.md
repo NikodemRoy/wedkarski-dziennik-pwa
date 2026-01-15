@@ -48,6 +48,26 @@ Każdy widok ma jasno określony cel i jest połączony z pozostałymi w spójny
 
 ---
 
+## Podgląd wybranych widoków
+
+- Lista wpisów
+![Wynik Lighthouse](.IMG/lista_wpisow.png)
+
+- Dodawanie wpisu
+![Wynik Lighthouse](.IMG/dodawanie_wpisow.png)
+
+- Szczegóły wpisu
+![Wynik Lighthouse](.IMG/szczegoly_wpisu.png)
+![Wynik Lighthouse](.IMG/ryby_w_wpisie.png)
+
+- Edycja wpisu
+![Wynik Lighthouse](.IMG/edycja_wpisu.png)
+
+- Edycja ryby
+![Wynik Lighthouse](.IMG/edycja_ryby.png)
+
+---
+
 ## Natywne API
 
 Aplikacja wykorzystuje:
@@ -82,7 +102,7 @@ Dodawanie zdjęć z urządzenia. Obrazy są skalowane i kompresowane za pomocą 
 
 Aplikacja osiąga bardzo wysokie wyniki w Lighthouse (100 w trybie incognito).
 
-![Wynik Lighthouse](./wynik_lighthouse.png)
+![Wynik Lighthouse](.IMG/wynik_lighthouse.png)
 
 ---
 
