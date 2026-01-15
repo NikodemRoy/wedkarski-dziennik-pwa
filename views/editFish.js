@@ -50,7 +50,7 @@ function viewEditFish(tripId, fishId) {
     "<label>Zdjęcie ryby</label><br>" +
     photoPreview +
     "<div class=\"row\">" +
-    "<input id=\"editFishPhoto\" type=\"file\" accept=\"image/*\>" +
+    "<input id=\"editFishPhoto\" type=\"file\" accept=\"image/*\">" +
     "<div id=\"fishPhotoStatus\" class=\"small\"></div>" +
     "</div>" +
     "</div>" +
