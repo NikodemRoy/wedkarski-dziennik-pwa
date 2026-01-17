@@ -1,37 +1,43 @@
-var CACHE_NAME = "wedkarski-cache-v8";
+var CACHE_NAME = "wedkarski-cache-v11";
 
 var ASSETS = [
-  "./",
-  "./index.html",
-  "./styles.css",
-  "./storage.js",
-  "./app.js",
-  "./manifest.webmanifest",
-  "./utils/helper.js",
-  "./utils/images.js",
-  "./utils/location.js",
-  "./data/trips.js",
-  "./data/fish.js",
-  "./views/home.js",
-  "./views/trips.js",
-  "./views/addTrip.js",
-  "./views/tripDetails.js",
-  "./views/editTrip.js",
-  "./views/editFish.js",
-  "./icons/android/android-launchericon-192-192.png",
-  "./icons/android/android-launchericon-512-512.png",
-  "./icons/android/android-launchericon-96-96.png"
+  "",
+  "index.html",
+  "styles.css",
+  "storage.js",
+  "app.js",
+  "manifest.webmanifest",
+  "utils/helper.js",
+  "utils/images.js",
+  "utils/location.js",
+  "data/trips.js",
+  "data/fish.js",
+  "views/home.js",
+  "views/trips.js",
+  "views/addTrip.js",
+  "views/tripDetails.js",
+  "views/editTrip.js",
+  "views/editFish.js",
+  "icons/android/android-launchericon-192-192.png",
+  "icons/android/android-launchericon-512-512.png",
+  "icons/android/android-launchericon-96-96.png"
 ];
+
+function u(path) {
+  return new URL(path, self.registration.scope).toString();
+}
 
 self.addEventListener("install", function (e) {
   self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
-      return Promise.all(
-        ASSETS.map(function (url) {
-          return cache.add(url).catch(function () {});
-        })
-      );
+      return cache.add(u("index.html")).then(function () {
+        return Promise.all(
+          ASSETS.map(function (p) {
+            return cache.add(u(p)).catch(function () {});
+          })
+        );
+      });
     })
   );
 });
@@ -63,12 +69,16 @@ self.addEventListener("fetch", function (e) {
   if (isNavigation(req)) {
     e.respondWith(
       fetch(req)
-        .then(function (res) {
-          return res;
-        })
-        .catch(function () {
-          return caches.match("./index.html");
-        })
+      .then(function (res) {
+        var copy = res.clone();
+        caches.open(CACHE_NAME).then(function (cache) {
+          cache.put(u("index.html"), copy).catch(function () {});
+        });
+        return res;
+      })
+      .catch(function () {
+        return caches.match(u("index.html"));
+      })
     );
     return;
   }
@@ -86,7 +96,10 @@ self.addEventListener("fetch", function (e) {
           return res;
         })
         .catch(function () {
-          return new Response("", { status: 504, statusText: "Offline" });
+          return new Response("", {
+            status: 504,
+            statusText: "Offline"
+          });
         });
     })
   );
