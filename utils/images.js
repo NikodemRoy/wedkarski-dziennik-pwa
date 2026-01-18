@@ -1,5 +1,5 @@
 function readFileAsDataUrl(file, cb) {
-  var reader = new FileReader();
+  const reader = new FileReader();
   reader.onload = function () {
     cb(String(reader.result || ""));
   };
@@ -10,32 +10,32 @@ function readFileAsDataUrl(file, cb) {
 }
 
 function compressImageDataUrl(dataUrl, maxSize, quality, cb) {
-  var img = new Image();
+  const img = new Image();
 
   img.onload = function () {
-    var w = img.naturalWidth || img.width;
-    var h = img.naturalHeight || img.height;
+    const w = img.naturalWidth || img.width;
+    const h = img.naturalHeight || img.height;
 
     if (!w || !h) {
       cb("");
       return;
     }
 
-    var scale = 1;
+    let scale = 1;
     if (w > h && w > maxSize) scale = maxSize / w;
     if (h >= w && h > maxSize) scale = maxSize / h;
 
-    var nw = Math.max(1, Math.round(w * scale));
-    var nh = Math.max(1, Math.round(h * scale));
+    const nw = Math.max(1, Math.round(w * scale));
+    const nh = Math.max(1, Math.round(h * scale));
 
-    var canvas = document.createElement("canvas");
+    const canvas = document.createElement("canvas");
     canvas.width = nw;
     canvas.height = nh;
 
-    var ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0, nw, nh);
 
-    var out = "";
+    let out = "";
     try {
       out = canvas.toDataURL("image/jpeg", quality);
     } catch (e) {

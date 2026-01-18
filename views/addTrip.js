@@ -1,5 +1,5 @@
 function viewAddTrip() {
-  var today = new Date().toISOString().slice(0, 10);
+  const today = new Date().toISOString().slice(0, 10);
 
   return (
     "<h1>Nowy wpis</h1>" +

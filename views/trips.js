@@ -1,6 +1,6 @@
 function viewTrips() {
-  var trips = loadTrips();
-  var html = "<h1>Wpisy</h1>";
+  const trips = loadTrips();
+  let html = "<h1>Wpisy</h1>";
 
   if (trips.length === 0) {
     return (
@@ -14,8 +14,8 @@ function viewTrips() {
 
   html += "<ul class=\"list\">";
 
-  for (var i = 0; i < trips.length; i++) {
-    var t = trips[i];
+  for (let i = 0; i < trips.length; i++) {
+    const t = trips[i];
     html +=
       "<li>" +
       "<div class=\"item-top\">" +

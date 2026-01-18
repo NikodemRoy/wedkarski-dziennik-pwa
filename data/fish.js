@@ -1,6 +1,6 @@
 function addFishToTrip(tripId, fish) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(tripId, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(tripId, trips);
   if (idx === -1) return false;
 
   if (!Array.isArray(trips[idx].fish)) trips[idx].fish = [];
@@ -10,16 +10,16 @@ function addFishToTrip(tripId, fish) {
 }
 
 function updateFish(tripId, fishId, patch) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(tripId, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(tripId, trips);
   if (idx === -1) return false;
 
   if (!Array.isArray(trips[idx].fish)) trips[idx].fish = [];
 
-  var fish = trips[idx].fish;
-  var f = null;
+  const fish = trips[idx].fish;
+  let f = null;
 
-  for (var i = 0; i < fish.length; i++) {
+  for (let i = 0; i < fish.length; i++) {
     if (fish[i].id === fishId) {
       f = fish[i];
       break;
@@ -37,15 +37,15 @@ function updateFish(tripId, fishId, patch) {
 }
 
 function deleteFish(tripId, fishId) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(tripId, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(tripId, trips);
   if (idx === -1) return true;
 
-  var fish = trips[idx].fish;
+  let fish = trips[idx].fish;
   if (!Array.isArray(fish)) fish = [];
 
-  var next = [];
-  for (var i = 0; i < fish.length; i++) {
+  const next = [];
+  for (let i = 0; i < fish.length; i++) {
     if (fish[i].id !== fishId) next.push(fish[i]);
   }
 

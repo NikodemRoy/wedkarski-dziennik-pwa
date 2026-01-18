@@ -12,7 +12,7 @@ function escapeText(s) {
 }
 
 function setTextById(id, text) {
-  var el = document.getElementById(id);
+  const el = document.getElementById(id);
   if (el) el.textContent = text;
 }
 
@@ -22,29 +22,32 @@ function getRoute() {
 
 function getTripIdFromRoute(route) {
   if (!route.startsWith("#trip/")) return null;
-  var id = route.slice(6);
+  const id = route.slice(6);
   if (!id) return null;
   return id;
 }
 
 function getEditTripIdFromRoute(route) {
   if (!route.startsWith("#edit-trip/")) return null;
-  var id = route.slice(11);
+  const id = route.slice(11);
   if (!id) return null;
   return id;
 }
 
 function getEditFishFromRoute(route) {
   if (!route.startsWith("#edit-fish/")) return null;
-  var rest = route.slice(11);
+  const rest = route.slice(11);
   if (!rest) return null;
-  var parts = rest.split("/");
+  const parts = rest.split("/");
   if (parts.length !== 2) return null;
-  return { tripId: parts[0], fishId: parts[1] };
+  return {
+    tripId: parts[0],
+    fishId: parts[1]
+  };
 }
 
 function findTripIndexById(id, trips) {
-  for (var i = 0; i < trips.length; i++) {
+  for (let i = 0; i < trips.length; i++) {
     if (trips[i].id === id) return i;
   }
   return -1;

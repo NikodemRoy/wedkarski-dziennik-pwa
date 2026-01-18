@@ -1,14 +1,14 @@
 function saveTripObject(trip) {
-  var trips = loadTrips();
+  const trips = loadTrips();
   trips.unshift(trip);
   return saveTrips(trips);
 }
 
 function deleteTripById(id) {
-  var trips = loadTrips();
-  var next = [];
+  const trips = loadTrips();
+  const next = [];
 
-  for (var i = 0; i < trips.length; i++) {
+  for (let i = 0; i < trips.length; i++) {
     if (trips[i].id !== id) next.push(trips[i]);
   }
 
@@ -16,11 +16,11 @@ function deleteTripById(id) {
 }
 
 function updateTrip(id, patch) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(id, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(id, trips);
   if (idx === -1) return false;
 
-  var t = trips[idx];
+  const t = trips[idx];
 
   if (patch.lakeName !== undefined) t.lakeName = patch.lakeName;
   if (patch.date !== undefined) t.date = patch.date;

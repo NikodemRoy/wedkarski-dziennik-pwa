@@ -1,6 +1,6 @@
 function viewEditFish(tripId, fishId) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(tripId, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(tripId, trips);
 
   if (idx === -1) {
     return (
@@ -12,11 +12,11 @@ function viewEditFish(tripId, fishId) {
     );
   }
 
-  var t = trips[idx];
+  const t = trips[idx];
   if (!Array.isArray(t.fish)) t.fish = [];
 
-  var f = null;
-  for (var i = 0; i < t.fish.length; i++) {
+  let f = null;
+  for (let i = 0; i < t.fish.length; i++) {
     if (t.fish[i].id === fishId) f = t.fish[i];
   }
 
@@ -30,7 +30,7 @@ function viewEditFish(tripId, fishId) {
     );
   }
 
-  var photoPreview = "<p class=\"small\">Brak zdjęcia.</p>";
+  let photoPreview = "<p class=\"small\">Brak zdjęcia.</p>";
   if (f.photo && String(f.photo).startsWith("data:image/")) {
     photoPreview = "<div class=\"fish-photo\"><img src=\"" + f.photo + "\" alt=\"Zdjęcie ryby\"></div>";
   }

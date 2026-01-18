@@ -1,6 +1,6 @@
 function fillLocationInputs(latId, lngId, lat, lng) {
-  var latEl = document.getElementById(latId);
-  var lngEl = document.getElementById(lngId);
+  const latEl = document.getElementById(latId);
+  const lngEl = document.getElementById(lngId);
   if (latEl) latEl.value = lat;
   if (lngEl) lngEl.value = lng;
 }
@@ -15,8 +15,8 @@ function getLocationToInputs(latId, lngId) {
 
   navigator.geolocation.getCurrentPosition(
     function (pos) {
-      var lat = String(pos.coords.latitude);
-      var lng = String(pos.coords.longitude);
+      const lat = String(pos.coords.latitude);
+      const lng = String(pos.coords.longitude);
       fillLocationInputs(latId, lngId, lat, lng);
       setTextById("locStatus", "Zapisano lokalizację.");
     },

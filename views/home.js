@@ -1,5 +1,5 @@
 function viewHome() {
-  var trips = loadTrips();
+  const trips = loadTrips();
 
   return (
     "<h1>Start</h1>" +

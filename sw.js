@@ -1,6 +1,6 @@
-var CACHE_NAME = "wedkarski-cache-v11";
+const CACHE_NAME = "wedkarski-cache-v12";
 
-var ASSETS = [
+const ASSETS = [
   "",
   "index.html",
   "styles.css",
@@ -62,7 +62,7 @@ function isNavigation(req) {
 }
 
 self.addEventListener("fetch", function (e) {
-  var req = e.request;
+  const req = e.request;
 
   if (req.method !== "GET") return;
 
@@ -70,7 +70,7 @@ self.addEventListener("fetch", function (e) {
     e.respondWith(
       fetch(req)
       .then(function (res) {
-        var copy = res.clone();
+        const copy = res.clone();
         caches.open(CACHE_NAME).then(function (cache) {
           cache.put(u("index.html"), copy).catch(function () {});
         });
@@ -89,7 +89,7 @@ self.addEventListener("fetch", function (e) {
 
       return fetch(req)
         .then(function (res) {
-          var copy = res.clone();
+          const copy = res.clone();
           caches.open(CACHE_NAME).then(function (cache) {
             cache.put(req, copy).catch(function () {});
           });

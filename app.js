@@ -1,8 +1,8 @@
-var app = document.getElementById("app");
-var netClosed = false;
+const app = document.getElementById("app");
+let netClosed = false;
 
 function handleClick(e) {
-  var el = e.target;
+  const el = e.target;
   if (!el || !el.dataset) return;
 
   if (el.dataset.action === "get-location") {
@@ -31,19 +31,19 @@ function handleClick(e) {
   }
 
   if (el.dataset.action === "delete-trip") {
-    var sure = confirm("Usunąć wpis?");
+    const sure = confirm("Usunąć wpis?");
     if (!sure) return;
 
-    var ok = deleteTripById(el.dataset.id);
+    const ok = deleteTripById(el.dataset.id);
     if (ok) location.hash = "#trips";
     return;
   }
 
   if (el.dataset.action === "delete-fish") {
-    var sure2 = confirm("Usunąć rybę?");
+    const sure2 = confirm("Usunąć rybę?");
     if (!sure2) return;
 
-    var ok2 = deleteFish(el.dataset.tripId, el.dataset.fishId);
+    const ok2 = deleteFish(el.dataset.tripId, el.dataset.fishId);
     if (ok2) render();
     return;
   }
@@ -60,30 +60,31 @@ function handleSubmit(e) {
   if (e.target.id === "addTripForm") {
     e.preventDefault();
 
-    var lakeName = document.getElementById("lakeName").value.trim();
-    var date = document.getElementById("tripDate").value;
-    var notes = document.getElementById("tripNotes").value.trim();
-    var latRaw = document.getElementById("tripLat").value.trim();
-    var lngRaw = document.getElementById("tripLng").value.trim();
-    var fileEl = document.getElementById("tripCover");
+    const lakeName = document.getElementById("lakeName").value.trim();
+    const date = document.getElementById("tripDate").value;
+    const notes = document.getElementById("tripNotes").value.trim();
+    const latRaw = document.getElementById("tripLat").value.trim();
+    const lngRaw = document.getElementById("tripLng").value.trim();
+    const fileEl = document.getElementById("tripCover");
 
     if (!lakeName) return;
 
-    var locationObj = null;
+    let locationObj = null;
     if (latRaw && lngRaw) {
-      var lat = parseFloat(latRaw);
-      var lng = parseFloat(lngRaw);
-      if (!isNaN(lat) && !isNaN(lng)) locationObj = {
-        lat: lat,
-        lng: lng
-      };
+      const lat = parseFloat(latRaw);
+      const lng = parseFloat(lngRaw);
+      if (!isNaN(lat) && !isNaN(lng))
+        locationObj = {
+          lat: lat,
+          lng: lng
+        };
     }
 
-    var id = makeId();
-    var file = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0] : null;
+    const id = makeId();
+    const file = fileEl && fileEl.files && fileEl.files[0] ? fileEl.files[0] : null;
 
     if (!file) {
-      var ok = saveTripObject({
+      const ok = saveTripObject({
         id: id,
         lakeName: lakeName,
         date: date,
@@ -110,7 +111,7 @@ function handleSubmit(e) {
         return;
       }
 
-      var ok2 = saveTripObject({
+      const ok2 = saveTripObject({
         id: id,
         lakeName: lakeName,
         date: date,
@@ -134,30 +135,31 @@ function handleSubmit(e) {
   if (e.target.id === "editTripForm") {
     e.preventDefault();
 
-    var tripId = e.target.dataset.tripId;
-    var lakeName2 = document.getElementById("editLakeName").value.trim();
-    var date2 = document.getElementById("editTripDate").value;
-    var notes2 = document.getElementById("editTripNotes").value.trim();
-    var latRaw2 = document.getElementById("editTripLat").value.trim();
-    var lngRaw2 = document.getElementById("editTripLng").value.trim();
-    var fileEl2 = document.getElementById("editTripCover");
+    const tripId = e.target.dataset.tripId;
+    const lakeName2 = document.getElementById("editLakeName").value.trim();
+    const date2 = document.getElementById("editTripDate").value;
+    const notes2 = document.getElementById("editTripNotes").value.trim();
+    const latRaw2 = document.getElementById("editTripLat").value.trim();
+    const lngRaw2 = document.getElementById("editTripLng").value.trim();
+    const fileEl2 = document.getElementById("editTripCover");
 
     if (!lakeName2) return;
 
-    var locationObj2 = null;
+    let locationObj2 = null;
     if (latRaw2 && lngRaw2) {
-      var lat2 = parseFloat(latRaw2);
-      var lng2 = parseFloat(lngRaw2);
-      if (!isNaN(lat2) && !isNaN(lng2)) locationObj2 = {
-        lat: lat2,
-        lng: lng2
-      };
+      const lat2 = parseFloat(latRaw2);
+      const lng2 = parseFloat(lngRaw2);
+      if (!isNaN(lat2) && !isNaN(lng2))
+        locationObj2 = {
+          lat: lat2,
+          lng: lng2
+        };
     }
 
-    var file2 = fileEl2 && fileEl2.files && fileEl2.files[0] ? fileEl2.files[0] : null;
+    const file2 = fileEl2 && fileEl2.files && fileEl2.files[0] ? fileEl2.files[0] : null;
 
     if (!file2) {
-      var ok3 = updateTrip(tripId, {
+      const ok3 = updateTrip(tripId, {
         lakeName: lakeName2,
         date: date2,
         notes: notes2,
@@ -181,7 +183,7 @@ function handleSubmit(e) {
         return;
       }
 
-      var ok4 = updateTrip(tripId, {
+      const ok4 = updateTrip(tripId, {
         lakeName: lakeName2,
         date: date2,
         notes: notes2,
@@ -203,24 +205,24 @@ function handleSubmit(e) {
   if (e.target.id === "addFishForm") {
     e.preventDefault();
 
-    var tripId2 = e.target.dataset.tripId;
-    var species = document.getElementById("fishSpecies").value.trim();
-    var lengthRaw = document.getElementById("fishLength").value.trim();
-    var notes3 = document.getElementById("fishNotes").value.trim();
-    var photoEl = document.getElementById("fishPhoto");
+    const tripId2 = e.target.dataset.tripId;
+    const species = document.getElementById("fishSpecies").value.trim();
+    const lengthRaw = document.getElementById("fishLength").value.trim();
+    const notes3 = document.getElementById("fishNotes").value.trim();
+    const photoEl = document.getElementById("fishPhoto");
 
-    var length = null;
+    let length = null;
     if (lengthRaw) {
-      var n = parseFloat(lengthRaw);
+      const n = parseFloat(lengthRaw);
       if (!isNaN(n)) length = n;
     }
 
     if (!species) return;
 
-    var file3 = photoEl && photoEl.files && photoEl.files[0] ? photoEl.files[0] : null;
+    const file3 = photoEl && photoEl.files && photoEl.files[0] ? photoEl.files[0] : null;
 
     if (!file3) {
-      var ok5 = addFishToTrip(tripId2, {
+      const ok5 = addFishToTrip(tripId2, {
         id: makeId(),
         species: species,
         length: length,
@@ -245,7 +247,7 @@ function handleSubmit(e) {
         return;
       }
 
-      var ok6 = addFishToTrip(tripId2, {
+      const ok6 = addFishToTrip(tripId2, {
         id: makeId(),
         species: species,
         length: length,
@@ -267,26 +269,26 @@ function handleSubmit(e) {
   if (e.target.id === "editFishForm") {
     e.preventDefault();
 
-    var tripId3 = e.target.dataset.tripId;
-    var fishId = e.target.dataset.fishId;
+    const tripId3 = e.target.dataset.tripId;
+    const fishId = e.target.dataset.fishId;
 
-    var species2 = document.getElementById("editFishSpecies").value.trim();
-    var lengthRaw2 = document.getElementById("editFishLength").value.trim();
-    var notes4 = document.getElementById("editFishNotes").value.trim();
-    var photoEl2 = document.getElementById("editFishPhoto");
+    const species2 = document.getElementById("editFishSpecies").value.trim();
+    const lengthRaw2 = document.getElementById("editFishLength").value.trim();
+    const notes4 = document.getElementById("editFishNotes").value.trim();
+    const photoEl2 = document.getElementById("editFishPhoto");
 
-    var length2 = null;
+    let length2 = null;
     if (lengthRaw2) {
-      var n2 = parseFloat(lengthRaw2);
+      const n2 = parseFloat(lengthRaw2);
       if (!isNaN(n2)) length2 = n2;
     }
 
     if (!species2) return;
 
-    var file4 = photoEl2 && photoEl2.files && photoEl2.files[0] ? photoEl2.files[0] : null;
+    const file4 = photoEl2 && photoEl2.files && photoEl2.files[0] ? photoEl2.files[0] : null;
 
     if (!file4) {
-      var ok7 = updateFish(tripId3, fishId, {
+      const ok7 = updateFish(tripId3, fishId, {
         species: species2,
         length: length2,
         notes: notes4
@@ -309,7 +311,7 @@ function handleSubmit(e) {
         return;
       }
 
-      var ok8 = updateFish(tripId3, fishId, {
+      const ok8 = updateFish(tripId3, fishId, {
         species: species2,
         length: length2,
         notes: notes4,
@@ -327,21 +329,21 @@ function handleSubmit(e) {
 }
 
 function render() {
-  var route = getRoute();
+  const route = getRoute();
 
-  var editTripId = getEditTripIdFromRoute(route);
+  const editTripId = getEditTripIdFromRoute(route);
   if (editTripId) {
     app.innerHTML = viewEditTrip(editTripId);
     return;
   }
 
-  var ef = getEditFishFromRoute(route);
+  const ef = getEditFishFromRoute(route);
   if (ef) {
     app.innerHTML = viewEditFish(ef.tripId, ef.fishId);
     return;
   }
 
-  var tripId = getTripIdFromRoute(route);
+  const tripId = getTripIdFromRoute(route);
   if (tripId) {
     app.innerHTML = viewTripDetails(tripId);
     return;
@@ -359,17 +361,17 @@ window.addEventListener("hashchange", render);
 window.addEventListener("load", render);
 
 function hideToast() {
-  var t = document.getElementById("netToast");
+  const t = document.getElementById("netToast");
   if (t) t.style.display = "none";
 }
 
 function showToast() {
-  var t = document.getElementById("netToast");
+  const t = document.getElementById("netToast");
   if (t) t.style.display = "";
 }
 
 function updateNetBanner() {
-  var text = document.getElementById("netText");
+  const text = document.getElementById("netText");
   if (!text) return;
 
   if (navigator.onLine) {
@@ -391,7 +393,7 @@ window.addEventListener("online", updateNetBanner);
 window.addEventListener("offline", updateNetBanner);
 
 window.addEventListener("load", function () {
-  var btn = document.getElementById("netClose");
+  const btn = document.getElementById("netClose");
   if (btn) {
     btn.addEventListener("click", function (e) {
       e.preventDefault();
@@ -404,10 +406,10 @@ window.addEventListener("load", function () {
 });
 
 function showImageOverlay(src) {
-  var overlay = document.createElement("div");
+  const overlay = document.createElement("div");
   overlay.className = "img-overlay";
 
-  var img = document.createElement("img");
+  const img = document.createElement("img");
   img.src = src;
 
   overlay.appendChild(img);

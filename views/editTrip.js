@@ -1,6 +1,6 @@
 function viewEditTrip(id) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(id, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(id, trips);
 
   if (idx === -1) {
     return (
@@ -12,12 +12,12 @@ function viewEditTrip(id) {
     );
   }
 
-  var t = trips[idx];
-  var notes = t.notes ? t.notes : "";
+  const t = trips[idx];
+  const notes = t.notes ? t.notes : "";
 
-  var lat = "";
-  var lng = "";
-  var locText = "Brak";
+  let lat = "";
+  let lng = "";
+  let locText = "Brak";
 
   if (t.location && t.location.lat && t.location.lng) {
     lat = String(t.location.lat);
@@ -25,7 +25,7 @@ function viewEditTrip(id) {
     locText = "Zapisana";
   }
 
-  var coverPreview = "<p class=\"small\">Brak zdjęcia.</p>";
+  let coverPreview = "<p class=\"small\">Brak zdjęcia.</p>";
   if (t.coverPhoto && String(t.coverPhoto).startsWith("data:image/")) {
     coverPreview = "<div class=\"photo\"><img src=\"" + t.coverPhoto + "\" alt=\"Zdjęcie tła\"></div>";
   }

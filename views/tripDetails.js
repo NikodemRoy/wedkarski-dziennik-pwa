@@ -1,12 +1,12 @@
 function fishListHtml(tripId, fish) {
   if (!fish || fish.length === 0) return "<div class=\"card\"><p>Brak ryb.</p></div>";
 
-  var html = "<ul class=\"list\">";
-  for (var i = 0; i < fish.length; i++) {
-    var f = fish[i];
-    var len = f.length ? " (" + escapeText(f.length) + " cm)" : "";
+  let html = "<ul class=\"list\">";
+  for (let i = 0; i < fish.length; i++) {
+    const f = fish[i];
+    const len = f.length ? " (" + escapeText(f.length) + " cm)" : "";
 
-    var img = "<div class=\"fish-photo\"></div>";
+    let img = "<div class=\"fish-photo\"></div>";
     if (f.photo && String(f.photo).startsWith("data:image/")) {
       img = "<div class=\"fish-photo\"><img src=\"" + f.photo + "\" alt=\"Ryba\" data-action=\"zoom-photo\"></div>";
     }
@@ -32,10 +32,9 @@ function fishListHtml(tripId, fish) {
   return html;
 }
 
-
 function viewTripDetails(id) {
-  var trips = loadTrips();
-  var idx = findTripIndexById(id, trips);
+  const trips = loadTrips();
+  const idx = findTripIndexById(id, trips);
 
   if (idx === -1) {
     return (
@@ -47,21 +46,21 @@ function viewTripDetails(id) {
     );
   }
 
-  var t = trips[idx];
+  const t = trips[idx];
   if (!Array.isArray(t.fish)) t.fish = [];
 
-  var notes = t.notes ? escapeText(t.notes).replaceAll("\n", "<br>") : "";
+  const notes = t.notes ? escapeText(t.notes).replaceAll("\n", "<br>") : "";
 
-  var locText = "Brak";
-  var mapLink = "";
+  let locText = "Brak";
+  let mapLink = "";
 
   if (t.location && t.location.lat && t.location.lng) {
     locText = "Zapisana";
-    var q = encodeURIComponent(String(t.location.lat) + "," + String(t.location.lng));
+    const q = encodeURIComponent(String(t.location.lat) + "," + String(t.location.lng));
     mapLink = " <a class=\"btn\" href=\"https://www.google.com/maps?q=" + q + "\" target=\"_blank\">Otwórz w mapach</a>";
   }
 
-  var coverHtml = "";
+  let coverHtml = "";
   if (t.coverPhoto && String(t.coverPhoto).startsWith("data:image/")) {
     coverHtml =
       "<div class=\"row\">" +

@@ -1,10 +1,10 @@
-var STORAGE_KEY = "wedkarski_trip_v6";
+const STORAGE_KEY = "wedkarski_trip_v6";
 
 function loadTrips() {
-  var raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEY);
   if (!raw) return [];
   try {
-    var data = JSON.parse(raw);
+    const data = JSON.parse(raw);
     if (Array.isArray(data)) return data;
     return [];
   } catch (e) {
