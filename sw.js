@@ -28,7 +28,6 @@ function u(path) {
 }
 
 self.addEventListener("install", function (e) {
-  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME).then(function (cache) {
       return cache.add(u("index.html")).then(function () {
@@ -40,7 +39,9 @@ self.addEventListener("install", function (e) {
       });
     })
   );
+  self.skipWaiting();
 });
+
 
 self.addEventListener("activate", function (e) {
   e.waitUntil(
